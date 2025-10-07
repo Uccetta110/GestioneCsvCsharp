@@ -17,6 +17,7 @@ namespace GestioneCsv
         static void Main(string[] args)
         {
             CaricaCSV();
+
         }
 
         static public void CaricaCSV()
@@ -74,7 +75,7 @@ namespace GestioneCsv
             }
         }
 
-       static public int JsonNamesOut()
+        static public int JsonNamesOut()
         {
             int n = 1;
             Console.WriteLine("============================= CARICA CP =============================");
