@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.SqlServer.Server;
+using Newtonsoft.Json;
 
 namespace GestioneCsv
 {
@@ -11,16 +12,36 @@ namespace GestioneCsv
         protected static string directoryPath = Environment.CurrentDirectory + Path.DirectorySeparatorChar;
         protected static List<string> jsonDirectories = new List<string>();
         protected static List<string> jsonNames = new List<string>();
+        protected static List<CV> CVs = new List<CV>();
         public const int len = 69;
 
 
         static void Main(string[] args)
         {
-            CaricaCSV();
+            bool flag = true;
+            while (flag)
+            {
+                int r = ScegliCSV();
+                int r1 = MidMenu();
+                switch (r1)
+                {
+                    case 0:
+                        return;
+                    case 1:
+                        Console.Clear();
+                        break;
+                    case 2:
+                        CaricaCV(r);
+                        flag = false;
+                        break;
+                }
+
+            }
+
 
         }
 
-        static public void CaricaCSV()
+        static public int ScegliCSV()
         {
             ControllaCV();
             while (true)
@@ -43,15 +64,7 @@ namespace GestioneCsv
                         n = JsonNamesOut();
                     }
                 }
-                switch (r)
-                {
-                    case 0:
-                        return;
-                    default:
-                        break;
-                }
-                int count = -1;
-                int num = -1;
+                return r;
             }
         }
 
@@ -75,6 +88,24 @@ namespace GestioneCsv
             }
         }
 
+        static public void CaricaCV(int n)
+        {
+            string fullPath = directoryPath + "CV\\" + jsonDirectories[n - 1];
+            try
+            {
+                string json = File.ReadAllText(fullPath);
+                CV p = JsonConvert.DeserializeObject<CV>(json);
+
+                if (p != null)
+                    CVs.Add(p);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Errore nel file " + fullPath + ": " + ex.Message);
+            }
+
+        }
+
         static public int JsonNamesOut()
         {
             int n = 1;
@@ -90,6 +121,37 @@ namespace GestioneCsv
                 n++;
             }
             return n;
+        }
+
+        static public int MidMenu()
+        {
+            while (true)
+            {
+                int r = -1;
+                Console.WriteLine("=============================== MENU ================================");
+                Console.WriteLine("|                                                                   |");
+                Console.WriteLine("| [0] Esci dal Programma                                            |");
+                Console.WriteLine("|                                                                   |");
+                Console.WriteLine("| [1] Carica altri CV                                               |");
+                Console.WriteLine("|                                                                   |");
+                Console.WriteLine("| [2] Visualizza CVs                                                |");
+                Console.WriteLine("|                                                                   |");
+                while (r < 0 || r > 2)
+                {
+                    string r_temp = Console.ReadLine().Trim();
+                    if (int.TryParse(r_temp, out int r_parsed))
+                        r = Convert.ToInt32(r_temp);
+
+                    if (r < 0 || r > 2)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("| Scelta non valida, riprova.                                       |");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                }
+                return r;
+            }
         }
     }
 }
