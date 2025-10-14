@@ -29,13 +29,13 @@ namespace GestioneCsv
                         return;
                     case 1:
                         Console.Clear();
+                        CaricaCV(r);
                         break;
                     case 2:
                         CaricaCV(r);
                         flag = false;
                         break;
                 }
-
             }
 
 
