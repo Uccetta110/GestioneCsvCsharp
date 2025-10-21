@@ -12,7 +12,6 @@ namespace GestioneCsv
         protected static string directoryPath = Environment.CurrentDirectory + Path.DirectorySeparatorChar;
         protected static List<string> jsonDirectories = new List<string>();
         protected static List<string> jsonNames = new List<string>();
-        protected static List<int> jsonIndexes = new List<int>();
         protected static List<CV> CVs = new List<CV>();
         
         public const int len = 69;
@@ -34,7 +33,7 @@ namespace GestioneCsv
                     r--;
                     CVdaCaricare.Add(r);
                     jsonNames.RemoveAt(r);
-                    jsonIndexes.RemoveAt(r-1);
+                    jsonDirectories.RemoveAt(r);
                 }
                 
                 int r1 = MidMenu();
@@ -81,7 +80,6 @@ namespace GestioneCsv
                 }
                 if (r == 0)
                     return 0;
-                return jsonIndexes[r-1];
             }
         }
 
@@ -95,7 +93,6 @@ namespace GestioneCsv
             {
                 string fileName = Path.GetFileNameWithoutExtension(fullPath);
                 jsonNames.Add(fileName);
-                jsonIndexes.Add(i);
                 i++;
             }
 
@@ -128,7 +125,7 @@ namespace GestioneCsv
 
         static public int JsonNamesOut()
         {
-            int n = 1;
+            int n = 0;
             Console.WriteLine("============================= CARICA CP =============================");
             Console.WriteLine("|                                                                   |");
             Console.WriteLine("| [0] Esci dal Caricamento                                          |");
